@@ -22,7 +22,7 @@ class UserController extends Controller
      */
     public function index()
     {
-
+        //
     }
 
     /**
@@ -32,7 +32,7 @@ class UserController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -43,8 +43,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $response = $this->userRepo->store($request);
-        return $response;
+        //
     }
 
     /**
@@ -55,7 +54,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-
+        //
     }
 
     /**

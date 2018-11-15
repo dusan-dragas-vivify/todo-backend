@@ -9,7 +9,11 @@
 namespace App\Repositories;
 
 use App\Interfaces\IUserRepository;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements IUserRepository
 {
@@ -26,7 +30,12 @@ class UserRepository implements IUserRepository
 
     public function store(Request $request)
     {
-        // TODO: Implement store() method.
+        return User::create([
+            'username' => $request->get('username'),
+            'password' => Hash::make($request->get('password')),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
     }
 
     public function show($id)

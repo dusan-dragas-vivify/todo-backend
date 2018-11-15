@@ -20,7 +20,7 @@ class CreateTasksTable extends Migration
             $table->string('title');
             $table->string('content');
             $table->boolean('is_done')->default(false);
-            $table->boolean('is_prioritized')->default(false);
+            $table->unsignedTinyInteger('priority')->default(0);
             $table->timestamps();
         });
     }
