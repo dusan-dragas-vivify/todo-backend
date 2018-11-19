@@ -49,11 +49,8 @@ class TaskRepository implements ITaskRepository
 
     public function update(Request $request, $id)
     {
-        return Task::where('id', $id)->update([
-            'title' => $request->title,
-            'content' => $request->content,
-            'updated_at' => Carbon::now()
-        ]);
+        $data = json_decode($request->getContent(), true);
+        return Task::where('id', $id)->update($data);
     }
 
     public function destroy($id)
