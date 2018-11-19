@@ -2,39 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\ITaskRepository;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+
+    private $taskRepo;
+
+    public function __construct(ITaskRepository $ITaskRepository)
+    {
+        $this->taskRepo = $ITaskRepository;
+    }
+
     /**
-     * Display a listing of the resource.
+     * Display all tasks for authenticated user
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        $tasks = $this->taskRepo->index();
+        return response()->json($tasks);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created task in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $response = $this->taskRepo->store($request);
+        if($response)
+        {
+            return response()->json([
+                'status' => '201',
+                'Message' => 'Created'
+            ], 201);
+        }
     }
 
     /**

@@ -10,23 +10,30 @@ namespace App\Repositories;
 
 
 use App\Interfaces\ITaskRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TaskRepository implements ITaskRepository
 {
+
     public function index()
     {
-        // TODO: Implement index() method.
-    }
-
-    public function create()
-    {
-        // TODO: Implement create() method.
+        $user = JWTAuth::toUser();
+        return DB::table('tasks')->select()->where('user_id', $user->id)->get();
     }
 
     public function store(Request $request)
     {
-        // TODO: Implement store() method.
+        $user = JWTAuth::toUSer();
+        return DB::table('tasks')->insert([
+            'user_id' => $user->id,
+            'title' => $request->get('title'),
+            'content' => $request->get('content'),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
     }
 
     public function show($id)
@@ -47,6 +54,36 @@ class TaskRepository implements ITaskRepository
     public function destroy($id)
     {
         // TODO: Implement destroy() method.
+    }
+
+    /**
+     * Get currently authenticated user
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAuthenticatedUser()
+    {
+        try {
+
+            if (! $user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+
+            return response()->json(['token_expired'], $e->getStatusCode());
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+
+            return response()->json(['token_invalid'], $e->getStatusCode());
+
+        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+
+            return response()->json(['token_absent'], $e->getStatusCode());
+
+        }
+
+        return response()->json(compact('user'));
     }
 
 }
