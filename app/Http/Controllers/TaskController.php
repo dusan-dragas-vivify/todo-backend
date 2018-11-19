@@ -22,8 +22,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = $this->taskRepo->index();
-        return response()->json($tasks);
+        return $this->taskRepo->index();
     }
 
     /**
@@ -34,14 +33,7 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $response = $this->taskRepo->store($request);
-        if($response)
-        {
-            return response()->json([
-                'status' => '201',
-                'Message' => 'Created'
-            ], 201);
-        }
+        return $this->taskRepo->store($request);
     }
 
     /**
@@ -71,21 +63,22 @@ class TaskController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->taskRepo->update($request, $id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        return $this->taskRepo->destroy($id);
+
     }
 }

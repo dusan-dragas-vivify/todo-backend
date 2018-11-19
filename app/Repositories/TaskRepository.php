@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 
 use App\Interfaces\ITaskRepository;
+use App\Task;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,13 +22,13 @@ class TaskRepository implements ITaskRepository
     public function index()
     {
         $user = JWTAuth::toUser();
-        return DB::table('tasks')->select()->where('user_id', $user->id)->get();
+        return Task::where('user_id', $user->id)->get();
     }
 
     public function store(Request $request)
     {
         $user = JWTAuth::toUSer();
-        return DB::table('tasks')->insert([
+        return Task::create([
             'user_id' => $user->id,
             'title' => $request->get('title'),
             'content' => $request->get('content'),
@@ -48,42 +49,16 @@ class TaskRepository implements ITaskRepository
 
     public function update(Request $request, $id)
     {
-        // TODO: Implement update() method.
+        return Task::where('id', $id)->update([
+            'title' => $request->title,
+            'content' => $request->content,
+            'updated_at' => Carbon::now()
+        ]);
     }
 
     public function destroy($id)
     {
-        // TODO: Implement destroy() method.
-    }
-
-    /**
-     * Get currently authenticated user
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getAuthenticatedUser()
-    {
-        try {
-
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
-            }
-
-        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-
-            return response()->json(['token_expired'], $e->getStatusCode());
-
-        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-
-            return response()->json(['token_invalid'], $e->getStatusCode());
-
-        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-
-            return response()->json(['token_absent'], $e->getStatusCode());
-
-        }
-
-        return response()->json(compact('user'));
+        return Task::destroy($id);
     }
 
 }

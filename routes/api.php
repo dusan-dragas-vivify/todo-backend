@@ -19,4 +19,6 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('logout', 'AuthController@logout');
     Route::get('tasks', 'TaskController@index');
     Route::post('tasks', 'TaskController@store');
+    Route::patch('tasks/{id}', 'TaskController@update');
+    Route::delete('tasks/{id}', 'TaskController@destroy');
 });
