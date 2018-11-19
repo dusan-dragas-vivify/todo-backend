@@ -39,7 +39,7 @@ class TaskRepository implements ITaskRepository
 
     public function show($id)
     {
-        // TODO: Implement show() method.
+        return Task::where('id', $id)->firstOrFail();
     }
 
     public function edit($id)
