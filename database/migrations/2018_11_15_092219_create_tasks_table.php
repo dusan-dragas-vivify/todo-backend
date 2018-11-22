@@ -18,7 +18,7 @@ class CreateTasksTable extends Migration
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('title');
-            $table->string('content');
+            $table->text('content');
             $table->boolean('is_done')->default(false);
             $table->unsignedTinyInteger('priority')->default(0);
             $table->timestamps();

@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,4 +17,9 @@ Route::post('register', 'AuthController@register');
 Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('user', 'AuthController@getAuthenticatedUser');
     Route::get('logout', 'AuthController@logout');
+    Route::get('tasks', 'TaskController@index');
+    Route::post('tasks', 'TaskController@store');
+    Route::get('tasks/{id}', 'TaskController@show');
+    Route::patch('tasks/{id}', 'TaskController@update');
+    Route::delete('tasks/{id}', 'TaskController@destroy');
 });
