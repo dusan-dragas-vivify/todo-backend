@@ -21,7 +21,7 @@ class TaskRepository implements ITaskRepository
     public function index()
     {
         $user = JWTAuth::toUser();
-        return Task::where('user_id', $user->id)->get();
+        return Task::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
     }
 
     public function store(Request $request)
